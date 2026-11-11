@@ -1,0 +1,97 @@
+# ============================================================
+# RC office — .gitignore
+# ============================================================
+
+# --- macOS / Windows / Linux System Files ---
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*.swp
+*~
+
+# --- Echte Geschäfts- / Kundendaten (NIEMALS committen) ---
+daten/
+_analyse/
+_shots/
+_vorlagen/
+_build_tmp/
+
+# --- Eigene Original-Assets (Logo, Briefpapier etc.) ---
+# Die Dateien in app/assets/ selbst (Platzhalter) werden committet,
+# damit der Build laeuft. Private Originale bitte unter .originals ablegen.
+app/assets/.originals/
+app/assets/*.local.*
+
+# Ausnahme: Falls du eine leere Struktur / README zeigen willst,
+# lege z. B. daten/.gitkeep an und entsperre sie:
+# !daten/.gitkeep
+# !daten/README.md
+
+# --- Build-Artefakte (Rust / Tauri / Cargo) ---
+app/target/
+target/
+**/*.rs.bk
+Cargo.lock.bak
+
+# --- Fertige Binaries ---
+*.exe
+*.app/
+RC office.exe
+RC\ office.app/
+
+# --- PDF / XML Exporte (Rechnungen, Angebote etc.) ---
+*.pdf
+*.xml
+# Ausnahme: Beispiel-Vorlagen im Repo zulassen (bei Bedarf einkommentieren)
+# !app/assets/**/*.pdf
+# !app/assets/**/*.xml
+
+# --- Datenbanken ---
+*.db
+*.sqlite
+*.sqlite3
+*.db-shm
+*.db-wal
+
+# --- Exporte / Dumps ---
+*.jsonl
+*.azo
+*.dump.txt
+
+# --- Secrets / Konfiguration ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets.toml
+config.local.*
+
+# --- Logs ---
+*.log
+logs/
+
+# --- IDE / Editor ---
+.idea/
+.vscode/
+*.iml
+.fleet/
+.zed/
+
+# --- Temp & Caches ---
+tmp/
+temp/
+.cache/
+CACHEDIR.TAG
+
+# --- Tool-Helfer (private Scripts) ---
+_tools/
+
+# --- LIESMICH / Launcher mit evtl. lokalen Pfaden ---
+LIESMICH.txt
+Mac\ -\ RC\ office\ starten.command
