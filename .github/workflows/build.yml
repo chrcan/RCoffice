@@ -4,21 +4,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - os: windows-latest
-            name: windows
-            bin: rcoffice.exe
-          - os: macos-latest
-            name: macos-apple-silicon
-            bin: rcoffice
-          - os: macos-13
-            name: macos-intel
-            bin: rcoffice
-    runs-on: ${{ matrix.os }}
+  windows:
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
@@ -30,5 +17,24 @@ jobs:
         run: cargo build --release
       - uses: actions/upload-artifact@v4
         with:
-          name: rcoffice-${{ matrix.name }}
-          path: app/target/release/${{ matrix.bin }}
+          name: rcoffice-windows
+          path: app/target/release/rcoffice.exe
+
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin,x86_64-apple-darwin
+      - name: Tests
+        working-directory: app
+        run: cargo test --release
+      - name: Build Universal Binary and .app bundle
+        run: bash build-mac.sh
+      - name: Pack .app as tar.gz (preserves executable bit)
+        run: tar -czf "RC-office-macos-universal.tar.gz" "RC office.app"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rcoffice-macos-universal
+          path: RC-office-macos-universal.tar.gz

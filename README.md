@@ -88,8 +88,23 @@ cargo test
 Eine macOS-Version kann nur auf einem Mac (oder per GitHub Actions) gebaut werden:
 
 * Auf dem Mac: `./build-mac.sh` im Projektordner – erzeugt `RC office.app` als Universal Binary (Apple Silicon + Intel).
-* Ohne Mac: Projekt auf GitHub hochladen – `.github/workflows/build.yml` baut automatisch Windows- und macOS-Versionen
-  (Download unter „Actions → Artefakte").
+* Ohne Mac: Projekt auf GitHub hochladen – `.github/workflows/build.yml` baut automatisch
+  eine Windows-Version und eine macOS-Version (Universal Binary für Apple Silicon **und** Intel,
+  gebaut auf einem Apple-Silicon-Runner). Download unter **Actions → gewünschter Lauf → Artefakte**.
+
+#### Artefakte aus GitHub Actions entpacken
+
+GitHub verpackt jedes Artefakt beim Download zusätzlich in ein ZIP. Die macOS-App liegt darin als
+`tar.gz`, damit das Ausführungsbit erhalten bleibt (ohne das würde `RC office.app` nicht starten).
+
+* **Windows** (`rcoffice-windows.zip`): entpacken → `rcoffice.exe` ist direkt startbar.
+* **macOS** (`rcoffice-macos-universal.zip`): entpacken → darin liegt `RC-office-macos-universal.tar.gz`.
+  Dieses Archiv noch einmal entpacken, z. B. per Doppelklick im Finder oder im Terminal:
+  ```
+  tar -xzf RC-office-macos-universal.tar.gz
+  ```
+  Danach `RC office.app` nach `/Applications/` ziehen. Beim ersten Start: **Rechtsklick → Öffnen**
+  (die App ist nur ad-hoc signiert, nicht von Apple notarisiert).
 
 ## Aufbau des Quellcodes (`app/src`)
 
