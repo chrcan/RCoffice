@@ -285,13 +285,20 @@ impl App {
     }
 
     fn nav(&mut self, ui: &mut Ui) {
-        ui.add_space(14.0);
-        let titel = egui::Label::new(RichText::new("RC office").size(22.0).strong().color(Color32::WHITE)).sense(egui::Sense::click());
-        if ui.add(titel).on_hover_text("Über RC office").clicked() {
+        let logo_resp = egui::Frame::new()
+            .fill(Color32::WHITE)
+            .inner_margin(egui::Margin::symmetric(10, 16))
+            .show(ui, |ui| {
+                ui.set_min_width(ui.available_width());
+                ui.add(
+                    egui::Image::new(egui::include_image!("../assets/rcoffice.svg"))
+                        .fit_to_exact_size(egui::vec2(110.0, 22.0)),
+                )
+            });
+        if logo_resp.inner.on_hover_text("Über RC office").clicked() {
             self.about_offen = true;
         }
-        ui.label(RichText::new("Angebote · Rechnungen").size(12.0).color(Color32::from_rgb(148, 163, 184)));
-        ui.add_space(18.0);
+        ui.add_space(10.0);
         let eintraege: [(&str, Page); 9] = [
             ("Start", Page::Start),
             ("Adressen", Page::Adressen),
@@ -324,7 +331,10 @@ impl App {
         }
         ui.with_layout(egui::Layout::bottom_up(egui::Align::LEFT), |ui| {
             ui.add_space(8.0);
-            ui.label(RichText::new("Version 0.1 · Windows & macOS").size(11.0).color(Color32::from_rgb(100, 116, 139)));
+            ui.horizontal(|ui| {
+                ui.add_space(10.0);
+                ui.label(RichText::new("Version 0.1 · Windows & macOS").size(11.0).color(Color32::from_rgb(100, 116, 139)));
+            });
         });
     }
 
@@ -1148,7 +1158,7 @@ impl eframe::App for App {
             }
             ui.ctx().request_repaint();
         }
-        egui::Panel::left("nav").exact_size(200.0).resizable(false).frame(egui::Frame::new().fill(NAVY).inner_margin(egui::Margin::symmetric(10, 4))).show_inside(ui, |ui| self.nav(ui));
+        egui::Panel::left("nav").exact_size(200.0).resizable(false).frame(egui::Frame::new().fill(NAVY).inner_margin(egui::Margin::same(0))).show_inside(ui, |ui| self.nav(ui));
         if let Some((text, ok)) = self.meldung.clone() {
             egui::Panel::bottom("meldung").exact_size(32.0).frame(egui::Frame::new().fill(if ok { Color32::from_rgb(220, 252, 231) } else { Color32::from_rgb(254, 226, 226) }).inner_margin(egui::Margin::symmetric(14, 6))).show_inside(ui, |ui| {
                 ui.horizontal(|ui| {

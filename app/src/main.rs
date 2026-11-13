@@ -210,5 +210,8 @@ fn main() -> eframe::Result<()> {
         viewport: egui::ViewportBuilder::default().with_inner_size([1360.0, 860.0]).with_min_inner_size([1000.0, 640.0]).with_maximized(true).with_title("RC office"),
         ..Default::default()
     };
-    eframe::run_native("RC office", opts, Box::new(|cc| Ok(Box::new(app::App::new(cc)))))
+    eframe::run_native("RC office", opts, Box::new(|cc| {
+        egui_extras::install_image_loaders(&cc.egui_ctx);
+        Ok(Box::new(app::App::new(cc)))
+    }))
 }

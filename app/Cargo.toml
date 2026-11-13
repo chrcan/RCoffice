@@ -7,7 +7,7 @@ description = "RC office - Angebote, Auftraege, Lieferscheine und Rechnungen (ww
 [dependencies]
 eframe = "0.37"
 egui = "0.37"
-egui_extras = "0.37"
+egui_extras = { version = "0.37", features = ["svg"] }
 rusqlite = { version = "0.32", features = ["bundled"] }
 serde_json = "1"
 chrono = { version = "0.4", default-features = false, features = ["std", "clock"] }
